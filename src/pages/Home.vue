@@ -3,7 +3,7 @@
     <basic-layout>
       <ion-content>
         <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button>
+          <ion-fab-button router-link='/shopping-list'>
             <ion-icon :icon="add"></ion-icon>
           </ion-fab-button>
         </ion-fab>
