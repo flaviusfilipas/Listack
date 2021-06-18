@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import {  IonHeader, IonToolbar, IonLabel, IonButton, IonButtons } from '@ionic/vue'
+import {  IonHeader, IonToolbar, IonLabel, IonButton, IonButtons, IonIcon } from '@ionic/vue'
 import { personCircleOutline } from 'ionicons/icons';
 
 export default {
-  components:{  IonHeader, IonToolbar, IonLabel, IonButton, IonButtons},
+  components:{  IonHeader, IonToolbar, IonLabel, IonButton, IonButtons, IonIcon},
   data () {
     return {
       loggedIn: false
