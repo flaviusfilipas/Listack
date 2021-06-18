@@ -1,13 +1,19 @@
 <template>
-  <ion-page>Login</ion-page>
+  <ion-page>
+     <basic-layout></basic-layout>
+  </ion-page>
 </template>
 
 <script>
 import {IonPage} from '@ionic/vue'
+import BasicLayout from '../components/layout/BasicLayout.vue'
 export default {
+name: 'Login',
 components:{
-  IonPage
-}
+  IonPage,
+  BasicLayout
+  }
+
 }
 </script>
 
