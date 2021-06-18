@@ -6,13 +6,7 @@
           <ion-item>
             <ion-input class="list-title" placeholder="Title"></ion-input>
           </ion-item>
-          <ion-item>
-            <div class="ion-padding-end">
-              <ion-checkbox></ion-checkbox>
-            </div>
-            <ion-input placeholder="Add item"></ion-input>
-            <ion-icon :icon="trashBinSharp"></ion-icon>
-          </ion-item>
+          <list-item v-for="(item,index) in listItems" :key="item.id" :item="item" :index="index"/>
         </ion-list>
         <ion-list>
         </ion-list>
@@ -23,17 +17,22 @@
 
 <script>
 import ListViewLayout from '../components/layout/ListViewLayout.vue'
-import { IonPage, IonList, IonItem, IonCheckbox, IonInput, IonIcon, IonContent } from '@ionic/vue'
+import ListItem from '../components/ListItem.vue'
+import { IonItem, IonInput,IonPage, IonList, IonContent } from '@ionic/vue'
 import { trashBinSharp } from 'ionicons/icons';
+import {mapGetters} from 'vuex'
 export default {
   name: 'ListView',
   components:{
-    ListViewLayout, IonPage, IonList, IonItem, IonCheckbox, IonInput, IonIcon, IonContent
+    ListViewLayout, IonPage, IonList, IonContent, ListItem,IonItem, IonInput
   },
   setup() {
     return {
       trashBinSharp
     }
+  },
+  computed: {
+    ...mapGetters({ listItems:'getShoppingItems'})
   }
 }
 </script>

@@ -1,5 +1,4 @@
 import {createStore} from 'vuex'
-
 const store = createStore({
   state () {
     return {
@@ -26,12 +25,19 @@ const store = createStore({
     }
   },
   actions: {
-
+    updateListItem({commit}, payload){
+      commit('updateListItem', payload)
+    }
   },
   mutations: {
+    updateListItem(state,payload){
+      Object.assign(state.shoppingItems[payload.index], payload.updates)
+    }
   },
   getters: {
-
+    getShoppingItems(state) {
+      return state.shoppingItems
+    }
   }
 })
 export default store
