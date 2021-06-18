@@ -3,7 +3,7 @@
     <div class="ion-padding-end">
       <ion-checkbox @click="updateListItem({index: index, updates:{ isCompleted: !item.isCompleted}})" v-model="isChecked"></ion-checkbox>
     </div>
-    <ion-input :value="item.text" :style="item.text && item.isCompleted ? 'text-decoration: line-through;':'' " placeholder="Add item" clear-on-edit></ion-input>
+    <ion-input @change="itemTextChanged($event)" v-model="text" :style="item.text && item.isCompleted ? 'text-decoration: line-through;':'' " placeholder="Add item" clear-on-edit></ion-input>
     <ion-icon :icon="trashBinSharp"></ion-icon>
   </ion-item>
 </template>
@@ -25,6 +25,7 @@ export default {
   },
   data () {
     return{
+      text: this.item.text,
       isChecked: this.item.isCompleted,
     }
   },
@@ -34,7 +35,10 @@ export default {
     }
   },
   methods:{
-    ...mapActions(['updateListItem'])
+    ...mapActions(['updateListItem']),
+    itemTextChanged(event){
+      this.updateListItem({index: this.index, updates:{ text: event.target.value}})
+    }
   },
 }
 </script>
