@@ -3,7 +3,7 @@ const store = createStore({
   state () {
     return {
       shoppingItems:[
-        {
+       {
           'id':1,
           'isCompleted':false,
           'text':'Lamai',
@@ -21,23 +21,28 @@ const store = createStore({
           'text':'Mancare pisici',
           'listId':1
         }
-      ]
+      ],
     }
   },
   actions: {
     updateListItem({commit}, payload){
       commit('updateListItem', payload)
-    }
+    },
   },
   mutations: {
     updateListItem(state,payload){
       Object.assign(state.shoppingItems[payload.index], payload.updates)
+    },
+    checkItem(state, itemId){
+      const item = state.shoppingItems.find(item => item.id === itemId)
+      item.isCompleted = true
+    },
+    unCheckItem(state, itemId){
+      const item = state.shoppingItems.find(item => item.id === itemId)
+      item.isCompleted = false
     }
   },
   getters: {
-    getShoppingItems(state) {
-      return state.shoppingItems
-    }
   }
 })
 export default store
