@@ -20,13 +20,12 @@
 <script>
 import { IonItem, IonInput, IonCheckbox, IonIcon } from '@ionic/vue'
 import { trashBinSharp } from 'ionicons/icons';
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
   components: { IonItem, IonCheckbox, IonInput, IonIcon },
   props: {
     item: {
       type: Object,
-      required: true
     },
     index: {
       type: Number
@@ -46,13 +45,9 @@ export default {
   },
   methods: {
     ...mapActions(['updateListItem']),
+    ...mapMutations(['handleItemCheck']),
     handleCheck () {
-      if (!this.item.isCompleted) {
-        this.$store.commit('checkItem', this.item.id)
-      } else {
-        this.$store.commit('unCheckItem', this.item.id)
-      }
-
+      this.handleItemCheck(this.item.id)
     },
     itemTextChanged (event) {
       this.updateListItem({ index: this.index, updates: { text: event.target.value } })
