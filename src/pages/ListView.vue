@@ -21,7 +21,8 @@
           <ion-button
             @click="add()"
             fill="clear"
-            size="large">
+            size="large"
+          >
             <ion-icon
               slot="icon-only"
               :icon="addCircleOutline"
@@ -59,6 +60,11 @@ export default {
   components: {
     ListViewLayout, IonPage, IonList, IonContent, ListItem, IonItem, IonInput, IonLabel, IonIcon, IonButton
   },
+  data () {
+    return {
+      listId: Number(this.$route.params.id)
+    }
+  },
   setup () {
     return {
       addCircleOutline
@@ -83,10 +89,14 @@ export default {
   computed: {
     ...mapState(['shoppingItems']),
     listItems () {
-      return this.shoppingItems.filter(item => !item.isCompleted)
+      return this.shoppingItems.filter(function (item) {
+        return (item.listId === this.listId) && !item.isCompleted
+      }, this)
     },
     completedItems () {
-      return this.shoppingItems.filter(item => item.isCompleted)
+      return this.shoppingItems.filter(function (item) {
+        return (item.listId === this.listId) && item.isCompleted
+      }, this)
     }
   }
 }

@@ -1,62 +1,65 @@
-import {createStore} from 'vuex'
+import { createStore } from 'vuex'
 const store = createStore({
   state () {
     return {
-      userLists:[
+      userLists: [
         {
-          'id':1,
-          'name':'Metro',
+          'id': 1,
+          'name': 'Metro',
         },
         {
-          'id':2,
-          'name':'Selgros'
+          'id': 2,
+          'name': 'Selgros'
         },
       ],
-      shoppingItems:[
-       {
-          'id':1,
-          'isCompleted':false,
-          'text':'Lamai',
-          'listId':1
+      shoppingItems: [
+        {
+          'id': 1,
+          'isCompleted': false,
+          'text': 'Lamai',
+          'listId': 1
         },
         {
-          'id':2,
-          'isCompleted':false,
-          'text':'Apa',
-          'listId':1
+          'id': 2,
+          'isCompleted': false,
+          'text': 'Apa',
+          'listId': 1
         },
         {
-          'id':3,
-          'isCompleted':false,
-          'text':'Mancare pisici',
-          'listId':1
+          'id': 3,
+          'isCompleted': false,
+          'text': 'Mancare pisici',
+          'listId': 2
         }
       ],
     }
   },
   actions: {
-    updateListItem({commit}, payload){
+    updateListItem ({ commit }, payload) {
       commit('updateListItem', payload)
     },
   },
   mutations: {
-    updateListItem(state,payload){
+    updateListItem (state, payload) {
       Object.assign(state.shoppingItems[payload.index], payload.updates)
     },
-    handleItemCheck(state, itemId){
+    handleItemCheck (state, itemId) {
       const item = state.shoppingItems.find(item => item.id === itemId)
       item.isCompleted = !item.isCompleted
     },
-    checkItem(state, itemId){
+    checkItem (state, itemId) {
       const item = state.shoppingItems.find(item => item.id === itemId)
       item.isCompleted = true
     },
-    unCheckItem(state, itemId){
+    unCheckItem (state, itemId) {
       const item = state.shoppingItems.find(item => item.id === itemId)
       item.isCompleted = false
     },
-    addItem(state,item) {
+    addItem (state, item) {
       state.shoppingItems.push(item)
+    },
+    createList (state, list) {
+      state.userLists.push(list)
     }
   },
   getters: {
