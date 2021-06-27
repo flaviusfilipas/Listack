@@ -14,12 +14,12 @@ const routes = [
     component: Home
   },
   {
-    path:'/login',
+    path: '/login',
     name: 'Login',
     component: Login
   },
   {
-    path:'/shopping-list',
+    path: '/list/:id',
     name: 'ListView',
     component: ListView
   }
