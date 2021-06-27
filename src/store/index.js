@@ -2,6 +2,16 @@ import {createStore} from 'vuex'
 const store = createStore({
   state () {
     return {
+      userLists:[
+        {
+          'id':1,
+          'name':'Metro',
+        },
+        {
+          'id':2,
+          'name':'Selgros'
+        },
+      ],
       shoppingItems:[
        {
           'id':1,
