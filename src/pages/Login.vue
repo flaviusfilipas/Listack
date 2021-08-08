@@ -5,14 +5,14 @@
         <ion-item class="with-margins" lines="full">
           <ion-label position="floating">Email</ion-label>
           <ion-icon class="pointer-cursor ion-margin-top" slot="end" :icon="mailOutline" color="primary"></ion-icon>
-          <ion-input type="email" required></ion-input>
+          <ion-input v-model="email" type="email" required></ion-input>
         </ion-item>
         <ion-item class="with-margins" lines="full">
           <ion-label position="floating">Password</ion-label>
           <ion-icon @click="isPwd = !isPwd" class="pointer-cursor ion-margin-top" slot="end"
                     :icon="isPwd ? eyeOffOutline: eyeOutline"
                     color="primary"></ion-icon>
-          <ion-input :type="isPwd? 'password' : 'text'" required>
+          <ion-input v-model="password" :type="isPwd? 'password' : 'text'" required>
           </ion-input>
         </ion-item>
         <div class="with-margins forgot-password">
@@ -25,7 +25,7 @@
         </ion-row>
         <div class="sign-up-container with-margins">
           <h6>Don't have an account yet?</h6>
-          <ion-button fill="clear">Sign up</ion-button>
+          <ion-button router-link='/register' fill="clear">Sign up</ion-button>
         </div>
       </ion-content>
     </basic-layout>
@@ -36,7 +36,6 @@
 import {IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel} from '@ionic/vue'
 import BasicLayout from '../components/layout/BasicLayout.vue'
 import {eyeOffOutline, eyeOutline, mailOutline} from "ionicons/icons";
-
 export default {
   name: 'Login',
   components: {
@@ -44,8 +43,13 @@ export default {
   },
   data() {
     return {
+      email:'',
+      password:'',
       isPwd: true
     }
+  },
+  methods:{
+
   },
   setup() {
     return {
