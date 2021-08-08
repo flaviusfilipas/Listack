@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
 import store from './store'
+import authStore from "./store/auth";
 
 import { IonicVue } from '@ionic/vue';
 
@@ -27,6 +28,7 @@ import './theme/variables.css';
 const app = createApp(App)
   .use(IonicVue)
   .use(router)
+  .use(authStore)
   .use(store);
 
 router.isReady().then(() => {
