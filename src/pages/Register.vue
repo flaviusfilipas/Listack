@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <basic-layout>
+    <auth-layout title="Register">
       <ion-content>
         <ion-item class="with-margins" lines="full">
           <ion-label position="floating">Name</ion-label>
@@ -26,18 +26,18 @@
           </ion-col>
         </ion-row>
       </ion-content>
-    </basic-layout>
+    </auth-layout>
   </ion-page>
 </template>
 
 <script>
 import {IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel} from '@ionic/vue'
-import BasicLayout from '../components/layout/BasicLayout.vue'
+import AuthLayout from '../components/layout/AuthLayout.vue'
 import {eyeOffOutline, eyeOutline, mailOutline,personOutline} from "ionicons/icons";
 export default {
   name: "Register",
   components: {
-    IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel, BasicLayout
+    IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel, AuthLayout
   },
   data() {
     return {

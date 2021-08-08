@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <basic-layout>
+    <auth-layout title="Login">
       <ion-content>
         <ion-item class="with-margins" lines="full">
           <ion-label position="floating">Email</ion-label>
@@ -28,18 +28,18 @@
           <ion-button router-link='/register' fill="clear">Sign up</ion-button>
         </div>
       </ion-content>
-    </basic-layout>
+    </auth-layout>
   </ion-page>
 </template>
 
 <script>
 import {IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel} from '@ionic/vue'
-import BasicLayout from '../components/layout/BasicLayout.vue'
+import AuthLayout from '../components/layout/AuthLayout.vue'
 import {eyeOffOutline, eyeOutline, mailOutline} from "ionicons/icons";
 export default {
   name: 'Login',
   components: {
-    IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel, BasicLayout
+    IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel, AuthLayout
   },
   data() {
     return {
