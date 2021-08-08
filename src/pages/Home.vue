@@ -42,7 +42,7 @@ export default {
     IonList
   },
   methods: {
-    ...mapMutations(['createList']),
+    ...mapMutations('lists',['createList']),
     addNewList () {
       const newList = {
         'id': 4,
@@ -57,7 +57,7 @@ export default {
     return { add };
   },
   computed: {
-    ...mapState(['userLists']),
+    ...mapState('lists',['userLists']),
   }
 }
 </script>

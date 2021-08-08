@@ -1,9 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
-import store from './store'
-import authStore from "./store/auth";
-
+import store from './store';
 import { IonicVue } from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
@@ -28,7 +26,6 @@ import './theme/variables.css';
 const app = createApp(App)
   .use(IonicVue)
   .use(router)
-  .use(authStore)
   .use(store);
 
 router.isReady().then(() => {

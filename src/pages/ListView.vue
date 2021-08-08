@@ -71,7 +71,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['addItem']),
+    ...mapMutations('lists',['addItem']),
     add () {
       const item = {
         "id": 16,
@@ -87,7 +87,7 @@ export default {
 
   },
   computed: {
-    ...mapState(['shoppingItems']),
+    ...mapState('lists',['shoppingItems']),
     listItems () {
       return this.shoppingItems.filter(function (item) {
         return (item.listId === this.listId) && !item.isCompleted

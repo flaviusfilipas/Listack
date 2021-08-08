@@ -44,8 +44,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['updateListItem']),
-    ...mapMutations(['handleItemCheck']),
+    ...mapActions('lists',['updateListItem']),
+    ...mapMutations('lists',['handleItemCheck']),
     handleCheck () {
       this.handleItemCheck(this.item.id)
     },
