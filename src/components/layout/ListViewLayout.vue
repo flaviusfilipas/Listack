@@ -11,12 +11,7 @@
         <ion-button>
           <ion-icon :icon="locateOutline"></ion-icon>
         </ion-button>
-        <ion-button router-link='/login'>
-          <div class="button-container">
-            <ion-icon class="login-icon" :icon="personCircleOutline"></ion-icon>
-            <ion-label>Login</ion-label>
-          </div>
-        </ion-button>
+        <header-auth-button></header-auth-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -24,24 +19,18 @@
 </template>
 
 <script>
-import {  IonHeader, IonToolbar, IonLabel, IonButton, IonButtons, IonIcon, IonBackButton } from '@ionic/vue'
-import { personCircleOutline, personAddOutline, locateOutline } from 'ionicons/icons';
+import {  IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonBackButton } from '@ionic/vue'
+import { personAddOutline, locateOutline } from 'ionicons/icons';
+import HeaderAuthButton from "@/components/buttons/HeaderAuthButton";
 export default {
   name: 'ListViewLayout',
-   components:{  IonHeader, IonToolbar, IonLabel, IonButton, IonButtons, IonIcon, IonBackButton},
+   components:{HeaderAuthButton,  IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonBackButton},
     setup() {
-    return {personCircleOutline, personAddOutline, locateOutline}
+    return {personAddOutline, locateOutline}
   }
 }
 </script>
 
 <style>
-.button-container{
-  display: grid;
-  grid-template-rows: 70% 30% ;
-  justify-items: center;
-}
-.login-icon{
-  font-size:1.5em
-}
+
 </style>

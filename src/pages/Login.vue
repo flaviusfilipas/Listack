@@ -20,7 +20,7 @@
         </div>
         <ion-row class="with-margins">
           <ion-col>
-            <ion-button shape="round" color="primary" expand="block">Login</ion-button>
+            <ion-button @click="login" shape="round" color="primary" expand="block">Login</ion-button>
           </ion-col>
         </ion-row>
         <div class="sign-up-container with-margins">
@@ -36,6 +36,10 @@
 import {IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel} from '@ionic/vue'
 import AuthLayout from '../components/layout/AuthLayout.vue'
 import {eyeOffOutline, eyeOutline, mailOutline} from "ionicons/icons";
+import {mapActions} from "vuex";
+import {SpinnerDialog} from "@ionic-native/spinner-dialog";
+import {Dialogs} from "@ionic-native/dialogs";
+import router from "@/router";
 export default {
   name: 'Login',
   components: {
@@ -49,7 +53,18 @@ export default {
     }
   },
   methods:{
-
+    ...mapActions('auth',['loginUser']),
+    login(){
+      SpinnerDialog.show();
+      this.loginUser({email:this.email,password:this.password})
+      .then(() => {
+        SpinnerDialog.hide();
+        router.push('/home');
+      }).catch(error =>{
+        SpinnerDialog.hide();
+        Dialogs.alert(error.message, "Error","Ok")
+      })
+    }
   },
   setup() {
     return {

@@ -4,7 +4,7 @@
       <ion-content>
         <ion-item class="with-margins" lines="full">
           <ion-label position="floating">Name</ion-label>
-          <ion-icon class="pointer-cursor ion-margin-top" slot="end" :icon="personOutline" color="primary"></ion-icon>
+          <ion-icon class="pointer-cursor ion-margin-top" slot="end" :icon="personOutline" color="primary" required></ion-icon>
           <ion-input v-model="name" type="text" required></ion-input>
         </ion-item>
         <ion-item class="with-margins" lines="full">
@@ -22,7 +22,7 @@
         </ion-item>
         <ion-row class="with-margins">
           <ion-col>
-            <ion-button shape="round" color="primary" expand="block">Register</ion-button>
+            <ion-button @click="register" shape="round" color="primary" expand="block">Register</ion-button>
           </ion-col>
         </ion-row>
       </ion-content>
@@ -33,7 +33,13 @@
 <script>
 import {IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel} from '@ionic/vue'
 import AuthLayout from '../components/layout/AuthLayout.vue'
-import {eyeOffOutline, eyeOutline, mailOutline,personOutline} from "ionicons/icons";
+import {eyeOffOutline, eyeOutline, mailOutline, personOutline} from "ionicons/icons";
+import {mapActions} from "vuex";
+import {SpinnerDialog} from '@ionic-native/spinner-dialog';
+import {Dialogs} from '@ionic-native/dialogs'
+import axios from 'axios'
+import router from "@/router";
+
 export default {
   name: "Register",
   components: {
@@ -41,18 +47,36 @@ export default {
   },
   data() {
     return {
-      email:'',
-      password:'',
-      name:'',
+      email: '',
+      password: '',
+      name: '',
       isPwd: true
     }
   },
-  methods:{
+  methods: {
+    ...mapActions('auth', ['registerUser']),
 
+    register() {
+      SpinnerDialog.show();
+      this.registerUser({email: this.email, password: this.password, name: this.name})
+          .then(response => {
+            axios.post('/api/users', {id: response.user.uid, name: this.name, email: this.email})
+                .then(() => {
+                  SpinnerDialog.hide()
+                }).catch(() => {
+                  Dialogs.alert("Something went wrong","Error","Ok")
+              SpinnerDialog.hide()
+            })
+            router.push('/home')
+          }).catch(error => {
+            Dialogs.alert(error.message, "Error","Ok")
+        SpinnerDialog.hide()
+      })
+    }
   },
   setup() {
     return {
-      eyeOffOutline, eyeOutline, mailOutline,personOutline
+      eyeOffOutline, eyeOutline, mailOutline, personOutline
     }
   }
 }

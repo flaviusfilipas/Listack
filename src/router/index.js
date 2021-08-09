@@ -3,6 +3,7 @@ import Home from '../pages/Home.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import ListView from '../pages/ListView.vue'
+import {Storage} from "@capacitor/storage";
 
 const routes = [
   {
@@ -34,6 +35,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to,from,next) => {
+   Storage.get({key:"loggedIn"})
+       .then(response => {
+         const loggedIn = response.value;
+         if(loggedIn === "false" && (to.path !=='/login') && to.path !== '/register'){
+           next("/login");
+         }else{
+           next();
+         }
+       })
 })
 
 export default router
