@@ -19,17 +19,19 @@ const actions = {
         auth.onAuthStateChanged(user => {
             if (user) {
                 commit('setLoggedIn', true)
-                Storage.set({key:'loggedIn',value:'true'}).then(() => {
-                    console.log("Set loggedIn successfully");
-                }).catch(error =>{
-                    console.log("Could not set loggedIn",error);
+                Storage.set({key:'loggedIn',value:'true'}).catch(error =>{
+                    console.log("Could not set loggedIn ",error);
+                })
+                Storage.set({key:'userId',value:user.uid}).catch(error =>{
+                    console.log("Could not set userId ",error);
                 })
             } else {
                 commit('setLoggedIn', false)
-                Storage.set({key:'loggedIn',value:'false'}).then(() => {
-                    console.log("Set loggedIn successfully");
-                }).catch(error =>{
+                Storage.set({key:'loggedIn',value:'false'}).catch(error =>{
                     console.log("Could not set loggedIn",error);
+                })
+                Storage.set({key:'userId',value:''}).catch(error =>{
+                    console.log("Could not set userId ",error);
                 })
             }
         })
