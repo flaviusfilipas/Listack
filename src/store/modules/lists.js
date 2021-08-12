@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from 'axios'
 import {Storage} from "@capacitor/storage";
 import UserShoppingList from "@/model/userShoppingList";
@@ -54,7 +55,28 @@ const actions = {
                     router.push(`/list/${response.data.id}`)
                 })
         })
-    }
+    },
+    createOrUpdateListItem({commit}, payload){
+        if(payload.item.id !== null){
+           axios.put("/api/tasks/",payload.item)
+               .then(response => {
+                   payload.item = response.data
+                   commit('updateItem',payload);
+               })
+        }else {
+            axios.post("/api/tasks/", payload.item)
+                .then(response => {
+                    payload.item = response.data
+                    commit('updateItem',payload)
+                })
+        }
+    },
+    getItemsByListId({commit}, listId){
+        axios.get(`/api/tasks/list/${listId}`)
+            .then(response=>{
+                commit("populateListItems", response.data)
+            })
+    },
 }
 const mutations= {
     updateListItem (state, payload) {
@@ -75,11 +97,22 @@ const mutations= {
     addItem (state, item) {
         state.shoppingItems.push(item)
     },
+    updateItem(state, payload){
+        let item = state.shoppingItems.find(item => item.id === payload.item.id)
+        if(item) {
+            item = payload.item;
+        }else{
+             state.shoppingItems[payload.index] = payload.item;
+        }
+        },
     createList (state, list) {
         state.userLists.push(list)
     },
     populateUserLists(state, response){
         state.userLists = response
+    },
+    populateListItems(state, response){
+        state.shoppingItems = response;
     }
 }
 const getters ={

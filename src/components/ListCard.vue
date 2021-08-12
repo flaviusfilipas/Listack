@@ -3,7 +3,7 @@
     button
     @click="() => this.$router.push(`/list/${list.id}`)"
   >
-    <ion-label>{{list.name && list.name != '' ? list.name : 'Unamed list'}}</ion-label>
+    <ion-label>{{list.name && list.name !== '' ? list.name : 'Unamed list'}}</ion-label>
     <list-details-popover></list-details-popover>
   </ion-item>
 </template>

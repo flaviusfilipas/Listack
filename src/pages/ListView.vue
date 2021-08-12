@@ -54,7 +54,8 @@ import ListViewLayout from '../components/layout/ListViewLayout.vue'
 import ListItem from '../components/ListItem.vue'
 import { IonItem, IonInput, IonPage, IonList, IonContent, IonLabel, IonIcon, IonButton } from '@ionic/vue'
 import { addCircleOutline } from 'ionicons/icons';
-import { mapState, mapMutations } from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
+import Task from '../model/task'
 export default {
   name: 'ListView',
   components: {
@@ -73,18 +74,13 @@ export default {
   methods: {
     ...mapMutations('lists',['addItem']),
     add () {
-      const item = {
-        "id": 16,
-        "text": '',
-        "isCompleted": false,
-        "listId": 1
-      }
+      const item = new Task('',false, this.listId);
       this.addItem(item)
       setTimeout(() => {
         this.$nextTick(() => this.$refs.listItem.$el.children[1].setFocus());
-      }, 10);
-    }
-
+      }, 50);
+    },
+    ...mapActions('lists',['getItemsByListId']),
   },
   computed: {
     ...mapState('lists',['shoppingItems']),
@@ -98,6 +94,9 @@ export default {
         return (item.listId === this.listId) && item.isCompleted
       }, this)
     }
+  },
+  mounted() {
+    this.getItemsByListId(Number(this.$route.params.id));
   }
 }
 </script>
