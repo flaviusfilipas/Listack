@@ -45,7 +45,7 @@ export default {
     ...mapActions('lists', ['getUserLists', 'createUserList'])
   },
   mounted() {
-    this.getUserLists()
+    this.getUserLists();
   },
   setup() {
     return {add};
