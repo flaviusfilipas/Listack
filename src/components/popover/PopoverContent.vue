@@ -1,7 +1,6 @@
 <template>
   <ion-list>
     <ion-item lines="none" button @click="deleteList">Delete list</ion-item>
-    <ion-item lines="none" button>Delete checked items</ion-item>
   </ion-list>
 </template>
 

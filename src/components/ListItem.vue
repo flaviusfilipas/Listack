@@ -16,6 +16,7 @@
     </ion-input>
 
     <ion-button
+        color="danger"
         fill="clear"
         @click="deleteTask(item.id)">
       <ion-icon

@@ -64,6 +64,9 @@ const actions = {
     },
     deleteList({},listId){
         return axios.delete(`/api/shopping-lists/${listId}`)
+    },
+    deleteCompletedItems({}, listId){
+        return axios.delete(`/api/tasks/completed/${listId}`)
     }
 }
 const mutations = {
@@ -98,6 +101,9 @@ const mutations = {
     },
     deleteList(state, listId){
         state.userLists = state.userLists.filter(list => list.id !== listId)
+    },
+    deleteCompletedItems(state, listId){
+        state.shoppingItems = state.shoppingItems.filter(item => item.listId === listId && !item.completed)
     }
 }
 const getters = {}
