@@ -12,6 +12,12 @@ const actions = {
     updateListItem({commit}, payload) {
         commit('updateListItem', payload)
     },
+    updateList({commit}, payload){
+      axios.put('/api/shopping-lists',payload.item)
+          .then(response => {
+              commit('updateList', payload)
+      })
+    },
     getUserLists({commit}) {
         Storage.get({key: "userId"}).then(response => {
             axios.get(`/api/shopping-lists/user/${response.value}`)
@@ -83,6 +89,9 @@ const mutations = {
     },
     populateListItems(state, response) {
         state.shoppingItems = response;
+    },
+    updateList(state, payload){
+        state.shoppingItems[payload.index] = payload.item
     }
 }
 const getters = {}
