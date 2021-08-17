@@ -18,6 +18,7 @@
     <ion-button
         color="danger"
         fill="clear"
+        :disabled="item.id === null"
         @click="deleteTask(item.id)">
       <ion-icon
           slot="icon-only"
