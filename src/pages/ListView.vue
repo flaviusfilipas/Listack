@@ -86,12 +86,12 @@ export default {
     ...mapState('lists',['shoppingItems']),
     listItems () {
       return this.shoppingItems.filter(function (item) {
-        return (item.listId === this.listId) && !item.isCompleted
+        return (item.listId === this.listId) && !item.completed
       }, this)
     },
     completedItems () {
       return this.shoppingItems.filter(function (item) {
-        return (item.listId === this.listId) && item.isCompleted
+        return (item.listId === this.listId) && item.completed
       }, this)
     }
   },

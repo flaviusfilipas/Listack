@@ -1,22 +1,23 @@
 <template>
-  <ion-item @change="itemTextChanged($event)">
+  <ion-item>
     <div class="ion-padding-end">
       <ion-checkbox
           :disabled="item.id === null"
-          @click="handleCheck()"
-          v-model="isChecked"
+          @click="updateItem($event)"
+          v-model="completed"
       ></ion-checkbox>
     </div>
     <ion-input
+        @change="updateItem($event)"
         v-model="text"
-        :style="item.text && item.isCompleted ? 'text-decoration: line-through;':'' "
+        :style="item.name && item.completed ? 'text-decoration: line-through;':'' "
         placeholder="Add item"
         clear-on-edit>
     </ion-input>
 
     <ion-button
-      fill="clear"
-      @click="deleteTask(item.id)">
+        fill="clear"
+        @click="deleteTask(item.id)">
       <ion-icon
           slot="icon-only"
           :icon="trashBinSharp">
@@ -31,7 +32,7 @@ import {trashBinSharp} from 'ionicons/icons';
 import {mapActions, mapMutations} from 'vuex'
 
 export default {
-  components: {IonItem, IonCheckbox, IonInput, IonIcon,IonButton},
+  components: {IonItem, IonCheckbox, IonInput, IonIcon, IonButton},
   props: {
     item: {
       type: Object,
@@ -43,7 +44,7 @@ export default {
   data() {
     return {
       text: this.item.name,
-      isChecked: this.item.isCompleted,
+      completed: this.item.completed,
       localItem: this.item
     }
   },
@@ -55,12 +56,16 @@ export default {
   methods: {
     ...mapActions('lists', ['createOrUpdateListItem', 'deleteTask']),
     ...mapMutations('lists', ['handleItemCheck']),
-    handleCheck() {
-      this.handleItemCheck(this.item.id)
-    },
-    itemTextChanged(event) {
+    updateItem(event) {
       let localItem = this.item;
-      localItem.name = event.target.value;
+      switch (event.type) {
+        case 'click':
+          localItem.completed = !localItem.completed
+          break;
+        case 'change':
+          localItem.name = event.target.value;
+          break;
+      }
       let payload = {index: this.index, item: localItem}
       this.createOrUpdateListItem(payload)
     }
