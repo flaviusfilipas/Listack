@@ -5,36 +5,8 @@ import UserShoppingList from "@/model/userShoppingList";
 import router from "@/router";
 
 const state = () => ({
-    userLists: [
-        {
-            'id': 1,
-            'name': 'Metro',
-        },
-        {
-            'id': 2,
-            'name': 'Selgros'
-        },
-    ],
-    shoppingItems: [
-        {
-            'id': 1,
-            'isCompleted': false,
-            'text': 'Lamai',
-            'listId': 1
-        },
-        {
-            'id': 2,
-            'isCompleted': false,
-            'text': 'Apa',
-            'listId': 1
-        },
-        {
-            'id': 3,
-            'isCompleted': false,
-            'text': 'Mancare pisici',
-            'listId': 2
-        }
-    ]
+    userLists: [],
+    shoppingItems: []
 })
 const actions = {
     updateListItem({commit}, payload) {
