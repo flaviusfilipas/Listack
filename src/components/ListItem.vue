@@ -29,7 +29,7 @@
 <script>
 import {IonItem, IonInput, IonCheckbox, IonIcon, IonButton} from '@ionic/vue'
 import {trashBinSharp} from 'ionicons/icons';
-import {mapActions, mapMutations} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
   components: {IonItem, IonCheckbox, IonInput, IonIcon, IonButton},
@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     ...mapActions('lists', ['createOrUpdateListItem', 'deleteTask']),
-    ...mapMutations('lists', ['handleItemCheck']),
     updateItem(event) {
       let localItem = this.item;
       switch (event.type) {
