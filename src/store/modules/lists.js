@@ -61,6 +61,9 @@ const actions = {
             .then(() => {
                 commit("deleteTask", itemId)
             })
+    },
+    deleteList({},listId){
+        return axios.delete(`/api/shopping-lists/${listId}`)
     }
 }
 const mutations = {
@@ -92,6 +95,9 @@ const mutations = {
     },
     updateList(state, payload){
         state.shoppingItems[payload.index] = payload.item
+    },
+    deleteList(state, listId){
+        state.userLists = state.userLists.filter(list => list.id !== listId)
     }
 }
 const getters = {}

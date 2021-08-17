@@ -3,7 +3,7 @@
       button
       @click="() => this.$router.push(`/list/${list.id}`)">
     <ion-label>{{ list.title }}</ion-label>
-    <list-details-popover></list-details-popover>
+    <list-details-popover :list="list"></list-details-popover>
   </ion-item>
 </template>
 

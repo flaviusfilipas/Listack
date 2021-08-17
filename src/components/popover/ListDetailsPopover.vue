@@ -14,9 +14,8 @@
     :is-open="isOpenRef"
     :event="event"
     :translucent="true"
-    @didDismiss="setOpen(false)"
-  >
-    <popover-content />
+    @didDismiss="setOpen(false)">
+    <popover-content @confirm-modal="setOpen(false)" :list="list" />
   </ion-popover>
 </template>
 
@@ -28,7 +27,12 @@ import { ellipsisVerticalOutline } from 'ionicons/icons'
 export default {
   name: 'ListDetailsPopover',
   components: { IonButton, IonIcon, IonPopover, PopoverContent },
-
+  props:{
+    list:{
+      type: Object,
+      required:true
+    }
+  },
   setup () {
     const isOpenRef = ref(false);
     const event = ref();
