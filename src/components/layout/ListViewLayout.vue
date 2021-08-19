@@ -5,7 +5,7 @@
         <ion-back-button defaultHref="home"></ion-back-button>
       </ion-buttons>
       <ion-buttons slot="end">
-        <ion-button>
+        <ion-button @click="openAddContributorModal()">
           <ion-icon :icon="personAddOutline"></ion-icon>
         </ion-button>
         <ion-button>
@@ -19,14 +19,23 @@
 </template>
 
 <script>
-import {  IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonBackButton } from '@ionic/vue'
-import { personAddOutline, locateOutline } from 'ionicons/icons';
+import {IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonBackButton, modalController} from '@ionic/vue'
+import {personAddOutline, locateOutline} from 'ionicons/icons';
 import HeaderAuthButton from "@/components/buttons/HeaderAuthButton";
+import AddContributorModal from "@/components/modals/AddContributorModal";
+
 export default {
   name: 'ListViewLayout',
-   components:{HeaderAuthButton,  IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonBackButton},
-    setup() {
+  components: {HeaderAuthButton, IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonBackButton},
+  setup() {
     return {personAddOutline, locateOutline}
+  },
+  methods: {
+    openAddContributorModal() {
+      modalController.create({
+        component: AddContributorModal
+      }).then(modal => modal.present())
+    }
   }
 }
 </script>
