@@ -7,18 +7,18 @@ import router from "@/router";
 const state = () => ({
     userLists: [],
     shoppingItems: [],
-    currentList:{},
-    contributors:[],
+    currentList: {},
+    contributors: [],
 })
 const actions = {
     updateListItem({commit}, payload) {
         commit('updateListItem', payload)
     },
-    updateList({commit}, payload){
-      axios.put('/api/shopping-lists',payload.item)
-          .then(response => {
-              commit('updateList', payload)
-      })
+    updateList({commit}, payload) {
+        axios.put('/api/shopping-lists', payload.item)
+            .then(response => {
+                commit('updateList', payload)
+            })
     },
     getUserLists({commit}) {
         Storage.get({key: "userId"}).then(response => {
@@ -64,10 +64,10 @@ const actions = {
                 commit("deleteTask", itemId)
             })
     },
-    deleteList({},listId){
+    deleteList({}, listId) {
         return axios.delete(`/api/shopping-lists/${listId}`)
     },
-    deleteCompletedItems({}, listId){
+    deleteCompletedItems({}, listId) {
         return axios.delete(`/api/tasks/completed/${listId}`)
     }
 }
@@ -75,11 +75,22 @@ const mutations = {
     updateListItem(state, payload) {
         Object.assign(state.shoppingItems[payload.index], payload.updates)
     },
+    addContributor(state, contributor) {
+        state.contributors.push(contributor)
+    },
+    updateContributor(state, payload) {
+        let contributor = state.contributors.find(contributor => contributor.id === payload.contributor.id)
+        if (contributor) {
+            contributor = payload.contributor;
+        } else {
+            state.contributors[payload.index] = payload.contributor
+        }
+    },
     addItem(state, item) {
         state.shoppingItems.push(item)
     },
-    setCurrentList(state, list){
-      state.currentList = list;
+    setCurrentList(state, list) {
+        state.currentList = list;
     },
     updateItem(state, payload) {
         let item = state.shoppingItems.find(item => item.id === payload.item.id)
@@ -101,13 +112,13 @@ const mutations = {
     populateListItems(state, response) {
         state.shoppingItems = response;
     },
-    updateList(state, payload){
+    updateList(state, payload) {
         state.shoppingItems[payload.index] = payload.item
     },
-    deleteList(state, listId){
+    deleteList(state, listId) {
         state.userLists = state.userLists.filter(list => list.id !== listId)
     },
-    deleteCompletedItems(state, listId){
+    deleteCompletedItems(state, listId) {
         state.shoppingItems = state.shoppingItems.filter(item => item.listId === listId && !item.completed)
     }
 }
