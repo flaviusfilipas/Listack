@@ -6,7 +6,9 @@ import router from "@/router";
 
 const state = () => ({
     userLists: [],
-    shoppingItems: []
+    shoppingItems: [],
+    currentList:{},
+    contributors:[],
 })
 const actions = {
     updateListItem({commit}, payload) {
@@ -75,6 +77,9 @@ const mutations = {
     },
     addItem(state, item) {
         state.shoppingItems.push(item)
+    },
+    setCurrentList(state, list){
+      state.currentList = list;
     },
     updateItem(state, payload) {
         let item = state.shoppingItems.find(item => item.id === payload.item.id)

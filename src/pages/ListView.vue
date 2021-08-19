@@ -89,7 +89,11 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('lists', {addItem: 'addItem', deleteCompletedItemsMutation: 'deleteCompletedItems'}),
+    ...mapMutations('lists', {
+      addItem: 'addItem',
+      deleteCompletedItemsMutation: 'deleteCompletedItems',
+      setCurrentList: 'setCurrentList'
+    }),
     ...mapActions('lists', {
       getItemsByListId: 'getItemsByListId', updateList: 'updateList',
       deleteCompletedItemsAction: 'deleteCompletedItems'
@@ -130,13 +134,17 @@ export default {
         return (item.listId === this.listId) && item.completed
       }, this)
     },
+    getCurrentList(){
+      return this.userLists.find(list => list.id === this.listId)
+    },
     currentListTitle() {
-      const title = this.userLists.find(list => list.id === this.listId).title;
+      const title = this.getCurrentList.title;
       return title === 'Unnamed list' ? '' : title;
     }
   },
   mounted() {
     this.getItemsByListId(Number(this.$route.params.id));
+    this.setCurrentList(this.getCurrentList)
   }
 }
 </script>
@@ -146,12 +154,6 @@ export default {
   font-weight: bold;
   --placeholder-font-weight: bold;
 }
-
-.completed-section {
-  display: flex;
-  justify-content: space-between;
-}
-
 .add-item {
   display: grid;
   grid-template-columns: auto;
