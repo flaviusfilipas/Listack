@@ -15,13 +15,13 @@
 </template>
 
 <script>
-import {IonLabel, IonItem, alertController, toastController} from '@ionic/vue'
+import {IonLabel, IonItem, alertController, toastController, IonIcon} from '@ionic/vue'
 import {mapActions, mapMutations} from "vuex";
 import { trashOutline } from 'ionicons/icons';
 
 export default {
   name: 'ListCard',
-  components: {IonLabel, IonItem},
+  components: {IonLabel, IonItem,IonIcon},
   props: {
     list: {
       type: Object,
