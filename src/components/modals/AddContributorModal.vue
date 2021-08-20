@@ -7,29 +7,24 @@
           <ion-icon :icon="closeOutline" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-buttons slot="end">
-        <ion-button>Save</ion-button>
-      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content fullscreen>
+      <add-contributor/>
     <ion-list>
-      <contributor-item v-for="(contributor,index) in contributors"
+      <ion-list-header>Contributors</ion-list-header>
+      <contributor-item v-for="contributor in contributors"
                         :key="contributor.id"
-                        :currentContributor="contributor"
-                        :index="index"
-      ></contributor-item>
+                        :currentContributor="contributor">
+      </contributor-item>
     </ion-list>
-    <div class="add-item">
-      <ion-button
-          @click="add"
-          fill="clear">
-        <ion-icon
-            slot="icon-only"
-            :icon="personAddOutline">
-        </ion-icon>
-      </ion-button>
-    </div>
+    <ion-list>
+      <ion-list-header>Pending</ion-list-header>
+      <contributor-item v-for="contributor in pendingContributors"
+                        :key="contributor.id"
+                        :currentContributor="contributor">
+      </contributor-item>
+    </ion-list>
   </ion-content>
 </template>
 
@@ -48,10 +43,12 @@ import ContributorItem from "@/components/ContributorItem";
 import {closeOutline, personAddOutline} from 'ionicons/icons'
 import {mapMutations, mapState} from "vuex";
 import Contributor from "@/model/contributor";
+import AddContributor from "@/components/AddContributor";
 
 export default {
   name: "AddContributorModal",
   components: {
+    AddContributor,
     ContributorItem,
     IonHeader, IonToolbar, IonIcon, IonTitle, IonButton, IonButtons, IonContent, IonList
   },
@@ -69,16 +66,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('lists', ['currentList', 'contributors']),
+    ...mapState('lists', ['currentList', 'pendingContributors','contributors']),
     ...mapState('auth', ['currentUser'])
   }
 }
 </script>
 
 <style scoped>
-.add-item {
-  display: grid;
-  grid-template-columns: auto;
-  justify-items: center;
-}
+
 </style>

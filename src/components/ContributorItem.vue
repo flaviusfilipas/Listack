@@ -2,8 +2,7 @@
   <ion-item>
     <ion-icon color="primary" class="ion-padding-end" :icon="personCircleOutline">
     </ion-icon>
-    <ion-input @change="update" v-model="email" type="email" inputmode="email" pattern="email"
-               placeholder="Enter email"></ion-input>
+    <ion-label>{{email}}</ion-label>
     <ion-button
         color="danger"
         fill="clear">
@@ -16,20 +15,16 @@
 </template>
 
 <script>
-import {IonItem, IonIcon, IonInput, IonButton} from '@ionic/vue'
+import {IonItem, IonIcon, IonButton, IonLabel} from '@ionic/vue'
 import {trashBinSharp, personCircleOutline} from 'ionicons/icons'
 import { mapMutations} from "vuex";
 
 export default {
-  components: {IonItem, IonIcon, IonInput, IonButton},
+  components: {IonItem, IonIcon, IonButton,IonLabel},
   name: "ContributorItem",
   props: {
     currentContributor: {
       type: Object,
-      required: true
-    },
-    index: {
-      type: Number,
       required: true
     }
   },
@@ -38,7 +33,7 @@ export default {
   },
   data() {
     return {
-      email: this.currentContributor.contributorEmail
+      email: this.currentContributor.email
     }
   },
   methods: {

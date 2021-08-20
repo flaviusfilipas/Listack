@@ -9,6 +9,7 @@ const state = () => ({
     shoppingItems: [],
     currentList: {},
     contributors: [],
+    pendingContributors:[]
 })
 const actions = {
     updateListItem({commit}, payload) {
@@ -77,6 +78,9 @@ const mutations = {
     },
     addContributor(state, contributor) {
         state.contributors.push(contributor)
+    },
+    addPendingContributorInvite(state, invite) {
+      state.pendingContributors.push(invite)
     },
     updateContributor(state, payload) {
         let contributor = state.contributors.find(contributor => contributor.id === payload.contributor.id)
