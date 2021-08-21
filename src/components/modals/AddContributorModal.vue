@@ -25,8 +25,9 @@
     </ion-list>
     <ion-list v-if="pendingContributors.length > 0">
       <ion-list-header>Pending</ion-list-header>
-      <contributor-item v-for="contributor in pendingContributors"
+      <contributor-item v-for="(contributor,index) in pendingContributors"
                         :key="contributor.id"
+                        :index="index"
                         :currentContributor="contributor"
                         :withDeleteButton="!contributor.sentEmail">
       </contributor-item>

@@ -6,6 +6,7 @@
     </ion-label>
     <ion-button
         v-if="withDeleteButton"
+        @click="deletePendingInvite(index)"
         color="danger"
         fill="clear">
       <ion-icon
@@ -29,9 +30,12 @@ export default {
       type: Object,
       required: true
     },
+    index: {
+      type: Number
+    },
     withDeleteButton: {
       type: Boolean,
-      default:false
+      default: false
     }
   },
   setup() {
@@ -43,7 +47,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("lists", ['updateContributor'])
+    ...mapMutations("lists", ['deletePendingInvite'])
+
   }
 }
 </script>

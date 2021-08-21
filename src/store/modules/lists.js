@@ -144,6 +144,9 @@ const mutations = {
     },
     populatePendingContributorInvitations(state, invitations){
         state.pendingContributors = invitations
+    },
+    deletePendingInvite(state, index){
+      state.pendingContributors.splice(index,1)
     }
 }
 const getters = {}
