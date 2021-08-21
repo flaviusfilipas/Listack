@@ -2,34 +2,40 @@
   <ion-item>
     <ion-icon color="primary" class="ion-padding-end" :icon="personCircleOutline">
     </ion-icon>
-    <ion-label>{{email}}</ion-label>
+    <ion-label style="font-weight: bold">{{ email }}
+    </ion-label>
     <ion-button
+        v-if="withDeleteButton"
         color="danger"
         fill="clear">
       <ion-icon
           slot="icon-only"
-          :icon="trashBinSharp">
+          :icon="trashOutline">
       </ion-icon>
     </ion-button>
   </ion-item>
 </template>
 
 <script>
-import {IonItem, IonIcon, IonButton, IonLabel} from '@ionic/vue'
-import {trashBinSharp, personCircleOutline} from 'ionicons/icons'
-import { mapMutations} from "vuex";
+import {IonButton, IonIcon, IonItem, IonLabel} from '@ionic/vue'
+import {personCircleOutline, trashOutline} from 'ionicons/icons'
+import {mapMutations} from "vuex";
 
 export default {
-  components: {IonItem, IonIcon, IonButton,IonLabel},
+  components: {IonItem, IonIcon, IonButton, IonLabel},
   name: "ContributorItem",
   props: {
     currentContributor: {
       type: Object,
       required: true
+    },
+    withDeleteButton: {
+      type: Boolean,
+      default:false
     }
   },
   setup() {
-    return {trashBinSharp, personCircleOutline}
+    return {trashOutline, personCircleOutline}
   },
   data() {
     return {
@@ -37,13 +43,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("lists",['updateContributor']),
-    update() {
-      let localContributor = this.currentContributor;
-      localContributor.contributorEmail = this.email;
-      const payload = {index:this.index, contributor: localContributor}
-      this.updateContributor(payload)
-    }
+    ...mapMutations("lists", ['updateContributor'])
   }
 }
 </script>

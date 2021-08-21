@@ -27,7 +27,8 @@
       <ion-list-header>Pending</ion-list-header>
       <contributor-item v-for="contributor in pendingContributors"
                         :key="contributor.id"
-                        :currentContributor="contributor">
+                        :currentContributor="contributor"
+                        :withDeleteButton="!contributor.sentEmail">
       </contributor-item>
     </ion-list>
   </ion-content>
