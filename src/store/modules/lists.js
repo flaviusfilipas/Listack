@@ -76,6 +76,12 @@ const actions = {
             .then(response => {
                 commit('addPendingContributorInvite',response.data)
             })
+    },
+    getPendingContributorInvitationsByListId({commit}, listId){
+        axios.get(`api/contributor-invitations/list/${listId}`)
+            .then(response => {
+               commit('populatePendingContributorInvitations',response.data)
+            });
     }
 }
 const mutations = {
@@ -130,6 +136,9 @@ const mutations = {
     },
     deleteCompletedItems(state, listId) {
         state.shoppingItems = state.shoppingItems.filter(item => item.listId === listId && !item.completed)
+    },
+    populatePendingContributorInvitations(state, invitations){
+        state.pendingContributors = invitations
     }
 }
 const getters = {}
