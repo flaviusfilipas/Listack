@@ -1,6 +1,6 @@
 <template>
   <ion-item >
-    <ion-icon color="primary" class="ion-padding-end" :icon="personCircleOutline">
+    <ion-icon color="primary" class="ion-padding-end" :icon="personAddOutline">
     </ion-icon>
     <ion-input @keyup.enter="sendInvite" v-model="email" type="email" inputmode="email" pattern="email"
                placeholder="Enter email"></ion-input>
@@ -21,8 +21,8 @@ import {
   IonIcon, IonInput,
   IonItem,
 } from "@ionic/vue";
-import {personCircleOutline, checkmarkOutline} from 'ionicons/icons'
-import {mapMutations, mapState} from "vuex";
+import {personAddOutline, checkmarkOutline} from 'ionicons/icons'
+import {mapActions, mapState} from "vuex";
 import ContributorInvitation from "@/model/contributorInvitation";
 
 export default {
@@ -34,10 +34,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('lists',['addPendingContributorInvite']),
+    ...mapActions('lists',['createContributorPendingInvite']),
     sendInvite(){
       const invitationPayload = new ContributorInvitation(this.email, this.currentList.id)
-      this.addPendingContributorInvite(invitationPayload)
+      this.createContributorPendingInvite(invitationPayload)
       this.email=''
     }
   },
@@ -45,7 +45,7 @@ export default {
     ...mapState('lists',['currentList'])
   },
   setup() {
-    return {checkmarkOutline, personCircleOutline}
+    return {checkmarkOutline, personAddOutline}
   },
 }
 </script>

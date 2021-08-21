@@ -9,7 +9,7 @@ const state = () => ({
     shoppingItems: [],
     currentList: {},
     contributors: [],
-    pendingContributors:[]
+    pendingContributors: []
 })
 const actions = {
     updateListItem({commit}, payload) {
@@ -70,6 +70,12 @@ const actions = {
     },
     deleteCompletedItems({}, listId) {
         return axios.delete(`/api/tasks/completed/${listId}`)
+    },
+    createContributorPendingInvite({commit}, invitation){
+        axios.post("/api/contributor-invitations",invitation)
+            .then(response => {
+                commit('addPendingContributorInvite',response.data)
+            })
     }
 }
 const mutations = {
@@ -80,7 +86,7 @@ const mutations = {
         state.contributors.push(contributor)
     },
     addPendingContributorInvite(state, invite) {
-      state.pendingContributors.push(invite)
+        state.pendingContributors.push(invite)
     },
     updateContributor(state, payload) {
         let contributor = state.contributors.find(contributor => contributor.id === payload.contributor.id)
