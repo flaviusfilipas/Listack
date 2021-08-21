@@ -7,10 +7,13 @@
           <ion-icon :icon="closeOutline" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button @click="sendConfirmationEmail">Save</ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content fullscreen>
-      <add-contributor/>
+    <add-contributor/>
     <ion-list v-if="contributors.length > 0">
       <ion-list-header>Contributors</ion-list-header>
       <contributor-item v-for="contributor in contributors"
@@ -30,19 +33,20 @@
 
 <script>
 import {
-  IonHeader,
-  IonToolbar,
-  IonIcon,
-  IonTitle,
   IonButton,
   IonButtons,
   IonContent,
-  IonList, modalController
+  IonHeader,
+  IonIcon,
+  IonList,
+  IonTitle,
+  IonToolbar,
+  modalController,
+  toastController
 } from '@ionic/vue'
 import ContributorItem from "@/components/ContributorItem";
 import {closeOutline, personAddOutline} from 'ionicons/icons'
 import {mapActions, mapMutations, mapState} from "vuex";
-import Contributor from "@/model/contributor";
 import AddContributor from "@/components/AddContributor";
 
 export default {
@@ -57,17 +61,25 @@ export default {
   },
   methods: {
     ...mapMutations('lists', ['addContributor']),
-    ...mapActions('lists',['getPendingContributorInvitationsByListId']),
-    add() {
-      let newContributor = new Contributor(this.currentList.id, this.currentUser.name, '')
-      this.addContributor(newContributor)
-    },
+    ...mapActions('lists', {
+      getPendingContributorInvitationsByListId: 'getPendingContributorInvitationsByListId',
+      sendConfirmationEmailAction: 'sendConfirmationEmails'
+    }),
     dismiss() {
       modalController.dismiss();
+    },
+    sendConfirmationEmail(){
+      this.sendConfirmationEmailAction(this.currentUser.name)
+      .then(() => {
+        toastController.create({
+          message: 'Invitations have been sent',
+          duration: 1000,
+        }).then(toast => toast.present())
+      })
     }
   },
   computed: {
-    ...mapState('lists', ['currentList', 'pendingContributors','contributors']),
+    ...mapState('lists', ['currentList', 'pendingContributors', 'contributors']),
     ...mapState('auth', ['currentUser'])
   },
   mounted() {

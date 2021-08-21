@@ -82,6 +82,14 @@ const actions = {
             .then(response => {
                commit('populatePendingContributorInvitations',response.data)
             });
+    },
+    sendConfirmationEmails({state}, inviterName){
+        return axios.post("/api/emails/contributor/confirmation",null,{
+            params:{
+                inviterName: inviterName,
+                listId: state.currentList.id
+            }
+        })
     }
 }
 const mutations = {
