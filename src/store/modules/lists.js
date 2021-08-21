@@ -71,22 +71,25 @@ const actions = {
     deleteCompletedItems({}, listId) {
         return axios.delete(`/api/tasks/completed/${listId}`)
     },
-    createContributorPendingInvite({commit}, invitation){
-        axios.post("/api/contributor-invitations",invitation)
+    createContributorPendingInvite({commit}, invitation) {
+        axios.post("/api/contributor-invitations", invitation)
             .then(response => {
-                commit('addPendingContributorInvite',response.data)
+                commit('addPendingContributorInvite', response.data)
             })
     },
-    getPendingContributorInvitationsByListId({commit}, listId){
+    getPendingContributorInvitationsByListId({commit}, listId) {
         return axios.get(`api/contributor-invitations/list/${listId}`)
     },
-    sendConfirmationEmails({state}, inviterName){
+    sendConfirmationEmails({state}, inviterName) {
         const newPendingInvites = state.pendingContributors.filter(invite => !invite.sentEmail)
-        return axios.post("/api/emails/contributor/confirmation",newPendingInvites,{
-            params:{
+        return axios.post("/api/emails/contributor/confirmation", newPendingInvites, {
+            params: {
                 inviterName: inviterName,
             }
         })
+    },
+    addContributor({},newContributor) {
+      return axios.post("/api/shopping-list-contributors", newContributor)
     }
 }
 const mutations = {
@@ -142,11 +145,11 @@ const mutations = {
     deleteCompletedItems(state, listId) {
         state.shoppingItems = state.shoppingItems.filter(item => item.listId === listId && !item.completed)
     },
-    populatePendingContributorInvitations(state, invitations){
+    populatePendingContributorInvitations(state, invitations) {
         state.pendingContributors = invitations
     },
-    deletePendingInvite(state, index){
-      state.pendingContributors.splice(index,1)
+    deletePendingInvite(state, index) {
+        state.pendingContributors.splice(index, 1)
     }
 }
 const getters = {}

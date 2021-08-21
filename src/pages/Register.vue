@@ -4,7 +4,8 @@
       <ion-content>
         <ion-item class="with-margins" lines="full">
           <ion-label position="floating">Name</ion-label>
-          <ion-icon class="pointer-cursor ion-margin-top" slot="end" :icon="personOutline" color="primary" required></ion-icon>
+          <ion-icon slot="end" :icon="personOutline" class="pointer-cursor ion-margin-top" color="primary"
+                    required></ion-icon>
           <ion-input v-model="name" type="text" required></ion-input>
         </ion-item>
         <ion-item class="with-margins" lines="full">
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-import {IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel} from '@ionic/vue'
+import {IonButton, IonCol, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow} from '@ionic/vue'
 import AuthLayout from '../components/layout/AuthLayout.vue'
 import {eyeOffOutline, eyeOutline, mailOutline, personOutline} from "ionicons/icons";
 import {mapActions} from "vuex";
@@ -39,6 +40,7 @@ import {SpinnerDialog} from '@ionic-native/spinner-dialog';
 import {Dialogs} from '@ionic-native/dialogs'
 import axios from 'axios'
 import router from "@/router";
+import ShoppingListContributor from "@/model/shoppingListContributor";
 
 export default {
   name: "Register",
@@ -54,24 +56,34 @@ export default {
     }
   },
   methods: {
+    ...mapActions('lists', ['addContributor']),
     ...mapActions('auth', ['registerUser']),
+
+    handleLocalRegistration(firebaseResponse){
+      axios.post('/api/users', {id: firebaseResponse.user.uid, name: this.name, email: this.email})
+          .then(() => {
+            if(this.$route.query.signUpFromEmail){
+              const listId = this.$route.query.listId
+              let contributor = new ShoppingListContributor(listId, firebaseResponse.user.uid)
+              this.addContributor(contributor)
+            }
+            SpinnerDialog.hide()
+            router.push("/home")
+          }).catch(() => {
+        Dialogs.alert("Something went wrong", "Error", "Ok")
+        SpinnerDialog.hide()
+      })
+    },
 
     register() {
       SpinnerDialog.show();
-      this.registerUser({email: this.email, password: this.password, name: this.name})
-          .then(response => {
-            axios.post('/api/users', {id: response.user.uid, name: this.name, email: this.email})
-                .then(() => {
-                  SpinnerDialog.hide()
-                }).catch(() => {
-                  Dialogs.alert("Something went wrong","Error","Ok")
-              SpinnerDialog.hide()
-            })
-            router.push('/home')
-          }).catch(error => {
-            Dialogs.alert(error.message, "Error","Ok")
-        SpinnerDialog.hide()
-      })
+        this.registerUser({email: this.email, password: this.password, name: this.name})
+            .then(response => {
+              this.handleLocalRegistration(response)
+            }).catch(error => {
+          Dialogs.alert(error.message, "Error", "Ok")
+          SpinnerDialog.hide()
+        })
     }
   },
   setup() {

@@ -1,9 +1,10 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
+import {createRouter, createWebHistory} from '@ionic/vue-router';
 import Home from '../pages/Home.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import ListView from '../pages/ListView.vue'
 import {Storage} from "@capacitor/storage";
+import AddContributorPage from "@/pages/AddContributorPage";
 
 const routes = [
   {
@@ -29,7 +30,13 @@ const routes = [
     path: '/list/:id',
     name: 'ListView',
     component: ListView
+  },
+  {
+    path: '/add-contributor',
+    name: 'AddContributorPage',
+    component: AddContributorPage
   }
+
 ]
 
 const router = createRouter({
