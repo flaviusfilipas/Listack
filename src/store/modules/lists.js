@@ -78,16 +78,13 @@ const actions = {
             })
     },
     getPendingContributorInvitationsByListId({commit}, listId){
-        axios.get(`api/contributor-invitations/list/${listId}`)
-            .then(response => {
-               commit('populatePendingContributorInvitations',response.data)
-            });
+        return axios.get(`api/contributor-invitations/list/${listId}`)
     },
     sendConfirmationEmails({state}, inviterName){
-        return axios.post("/api/emails/contributor/confirmation",null,{
+        const newPendingInvites = state.pendingContributors.filter(invite => !invite.sentEmail)
+        return axios.post("/api/emails/contributor/confirmation",newPendingInvites,{
             params:{
                 inviterName: inviterName,
-                listId: state.currentList.id
             }
         })
     }

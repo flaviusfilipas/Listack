@@ -3,12 +3,14 @@
     <ion-toolbar>
       <ion-title>Add contributor</ion-title>
       <ion-buttons slot="start">
-        <ion-button @click="dismiss">
+        <ion-button @click="dismiss()">
           <ion-icon :icon="closeOutline" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
-        <ion-button @click="sendConfirmationEmail">Save</ion-button>
+        <ion-button :disabled="handleDisabled()"
+                    @click="sendConfirmationEmail">Save
+        </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -33,12 +35,14 @@
 
 <script>
 import {
+  alertController,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
   IonList,
+  IonListHeader,
   IonTitle,
   IonToolbar,
   modalController,
@@ -54,28 +58,55 @@ export default {
   components: {
     AddContributor,
     ContributorItem,
-    IonHeader, IonToolbar, IonIcon, IonTitle, IonButton, IonButtons, IonContent, IonList
+    IonHeader, IonToolbar, IonIcon, IonTitle, IonButton, IonButtons, IonContent, IonList,
+    IonListHeader
+  },
+  data() {
+    return {
+      pendingContributorInvitationsSize: 0
+    }
   },
   setup() {
     return {closeOutline, personAddOutline}
   },
   methods: {
-    ...mapMutations('lists', ['addContributor']),
+    handleDisabled(){
+      return this.pendingContributors.length <= this.pendingContributorInvitationsSize
+    },
+    ...mapMutations('lists', ['populatePendingContributorInvitations']),
     ...mapActions('lists', {
       getPendingContributorInvitationsByListId: 'getPendingContributorInvitationsByListId',
       sendConfirmationEmailAction: 'sendConfirmationEmails'
     }),
     dismiss() {
-      modalController.dismiss();
+      if (this.pendingContributors.length > this.pendingContributorInvitationsSize) {
+        alertController.create({
+          header: 'Discard changes',
+          message: 'Are you sure you want to discard your changes?',
+          buttons: [
+            {
+              text: 'Discard',
+              handler: () => {
+                modalController.dismiss()
+              },
+            },
+            {
+              text: 'Cancel'
+            },
+          ],
+        }).then(alert => alert.present());
+      }else{
+        modalController.dismiss()
+      }
     },
-    sendConfirmationEmail(){
+    sendConfirmationEmail() {
       this.sendConfirmationEmailAction(this.currentUser.name)
-      .then(() => {
-        toastController.create({
-          message: 'Invitations have been sent',
-          duration: 1000,
-        }).then(toast => toast.present())
-      })
+          .then(() => {
+            toastController.create({
+              message: 'Invitations have been sent',
+              duration: 1000,
+            }).then(toast => toast.present())
+          })
     }
   },
   computed: {
@@ -84,6 +115,12 @@ export default {
   },
   mounted() {
     this.getPendingContributorInvitationsByListId(this.currentList.id)
+        .then(response => {
+          this.populatePendingContributorInvitations(response.data)
+          this.pendingContributorInvitationsSize = this.pendingContributors.length
+        });
+
+
   }
 }
 </script>

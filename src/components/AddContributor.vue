@@ -16,13 +16,9 @@
 </template>
 
 <script>
-import {
-  IonButton,
-  IonIcon, IonInput,
-  IonItem,
-} from "@ionic/vue";
-import {personAddOutline, checkmarkOutline} from 'ionicons/icons'
-import {mapActions, mapState} from "vuex";
+import {IonButton, IonIcon, IonInput, IonItem,} from "@ionic/vue";
+import {checkmarkOutline, personAddOutline} from 'ionicons/icons'
+import {mapActions, mapMutations, mapState} from "vuex";
 import ContributorInvitation from "@/model/contributorInvitation";
 
 export default {
@@ -35,9 +31,10 @@ export default {
   },
   methods: {
     ...mapActions('lists',['createContributorPendingInvite']),
+    ...mapMutations('lists',['addPendingContributorInvite']),
     sendInvite(){
       const invitationPayload = new ContributorInvitation(this.email, this.currentList.id)
-      this.createContributorPendingInvite(invitationPayload)
+      this.addPendingContributorInvite(invitationPayload)
       this.email=''
     }
   },
