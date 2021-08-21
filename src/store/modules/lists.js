@@ -78,7 +78,7 @@ const actions = {
             })
     },
     getPendingContributorInvitationsByListId({commit}, listId) {
-        return axios.get(`api/contributor-invitations/list/${listId}`)
+        return axios.get(`api/contributor-invitations/pending/list/${listId}`)
     },
     sendConfirmationEmails({state}, inviterName) {
         const newPendingInvites = state.pendingContributors.filter(invite => !invite.sentEmail)
@@ -88,16 +88,29 @@ const actions = {
             }
         })
     },
-    addContributor({},newContributor) {
-      return axios.post("/api/shopping-list-contributors", newContributor)
+    addContributor({}, newContributor) {
+        return axios.post("/api/shopping-list-contributors", newContributor)
+    },
+    getContributorsByListId({commit}, listId) {
+        axios.get(`/api/shopping-list-contributors/list/${listId}`)
+            .then(response => {
+                commit('populateContributors', response.data)
+            }).catch(error => {
+            console.log("Could not get active contributors ", error)
+        })
+    },
+    approveContributorInvitation({commit}, payload) {
+        axios.put("/api/contributor-invitations/approve", null, {
+            params: {
+                userId: payload.userId,
+                listId: payload.listId
+            }
+        });
     }
 }
 const mutations = {
     updateListItem(state, payload) {
         Object.assign(state.shoppingItems[payload.index], payload.updates)
-    },
-    addContributor(state, contributor) {
-        state.contributors.push(contributor)
     },
     addPendingContributorInvite(state, invite) {
         state.pendingContributors.push(invite)
@@ -150,6 +163,9 @@ const mutations = {
     },
     deletePendingInvite(state, index) {
         state.pendingContributors.splice(index, 1)
+    },
+    populateContributors(state, contributors) {
+        state.contributors = contributors
     }
 }
 const getters = {}

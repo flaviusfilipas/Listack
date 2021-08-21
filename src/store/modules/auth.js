@@ -27,7 +27,6 @@ const actions = {
         auth.onAuthStateChanged(user => {
             if (user) {
                 commit('setLoggedIn', true)
-                dispatch("getUserById", user.uid)
                 Storage.set({key: 'loggedIn', value: 'true'}).catch(error => {
                     console.log("Could not set loggedIn ", error);
                 })

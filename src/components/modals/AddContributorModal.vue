@@ -78,7 +78,8 @@ export default {
     ...mapMutations('lists', ['populatePendingContributorInvitations']),
     ...mapActions('lists', {
       getPendingContributorInvitationsByListId: 'getPendingContributorInvitationsByListId',
-      sendConfirmationEmailAction: 'sendConfirmationEmails'
+      sendConfirmationEmailAction: 'sendConfirmationEmails',
+      getContributorsByListIdAction: 'getContributorsByListId'
     }),
     dismiss() {
       if (this.pendingContributors.length > this.pendingContributorInvitationsSize) {
@@ -97,13 +98,21 @@ export default {
             },
           ],
         }).then(alert => alert.present());
-      }else{
+      } else {
         modalController.dismiss()
       }
+    },
+    getPendingInvitations() {
+      this.getPendingContributorInvitationsByListId(this.currentList.id)
+          .then(response => {
+            this.populatePendingContributorInvitations(response.data)
+            this.pendingContributorInvitationsSize = this.pendingContributors.length
+          });
     },
     sendConfirmationEmail() {
       this.sendConfirmationEmailAction(this.currentUser.name)
           .then(() => {
+            this.getPendingInvitations()
             toastController.create({
               message: 'Invitations have been sent',
               duration: 1000,
@@ -116,12 +125,8 @@ export default {
     ...mapState('auth', ['currentUser'])
   },
   mounted() {
-    this.getPendingContributorInvitationsByListId(this.currentList.id)
-        .then(response => {
-          this.populatePendingContributorInvitations(response.data)
-          this.pendingContributorInvitationsSize = this.pendingContributors.length
-        });
-
+    this.getPendingInvitations();
+    this.getContributorsByListIdAction(this.currentList.id);
 
   }
 }

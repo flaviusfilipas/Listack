@@ -33,13 +33,14 @@
 </template>
 
 <script>
-import {IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel} from '@ionic/vue'
+import {IonButton, IonCol, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow} from '@ionic/vue'
 import AuthLayout from '../components/layout/AuthLayout.vue'
 import {eyeOffOutline, eyeOutline, mailOutline} from "ionicons/icons";
 import {mapActions} from "vuex";
 import {SpinnerDialog} from "@ionic-native/spinner-dialog";
 import {Dialogs} from "@ionic-native/dialogs";
 import router from "@/router";
+
 export default {
   name: 'Login',
   components: {
@@ -53,11 +54,12 @@ export default {
     }
   },
   methods:{
-    ...mapActions('auth',['loginUser']),
+    ...mapActions('auth',['loginUser','getUserById']),
     login(){
       SpinnerDialog.show();
       this.loginUser({email:this.email,password:this.password})
-      .then(() => {
+      .then(response => {
+        this.getUserById(response.user.uid)
         SpinnerDialog.hide();
         router.push('/home');
       }).catch(error =>{

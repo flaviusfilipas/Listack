@@ -56,19 +56,24 @@ export default {
     }
   },
   methods: {
-    ...mapActions('lists', ['addContributor']),
-    ...mapActions('auth', ['registerUser']),
+    ...mapActions('lists', ['addContributor', 'approveContributorInvitation']),
+    ...mapActions('auth', ['registerUser','getUserById']),
 
-    handleLocalRegistration(firebaseResponse){
+    handleLocalRegistration(firebaseResponse) {
       axios.post('/api/users', {id: firebaseResponse.user.uid, name: this.name, email: this.email})
           .then(() => {
-            if(this.$route.query.signUpFromEmail){
+            if (this.$route.query.signUpFromEmail) {
               const listId = this.$route.query.listId
               let contributor = new ShoppingListContributor(listId, firebaseResponse.user.uid)
               this.addContributor(contributor)
+              this.approveContributorInvitation({
+                userId: firebaseResponse.user.uid,
+                listId: this.$route.query.listId
+              })
+              this.getUserById(firebaseResponse.user.uid);
             }
             SpinnerDialog.hide()
-            router.push("/home")
+            router.push("/home");
           }).catch(() => {
         Dialogs.alert("Something went wrong", "Error", "Ok")
         SpinnerDialog.hide()
@@ -77,13 +82,13 @@ export default {
 
     register() {
       SpinnerDialog.show();
-        this.registerUser({email: this.email, password: this.password, name: this.name})
-            .then(response => {
-              this.handleLocalRegistration(response)
-            }).catch(error => {
-          Dialogs.alert(error.message, "Error", "Ok")
-          SpinnerDialog.hide()
-        })
+      this.registerUser({email: this.email, password: this.password, name: this.name})
+          .then(response => {
+            this.handleLocalRegistration(response)
+          }).catch(error => {
+        Dialogs.alert(error.message, "Error", "Ok")
+        SpinnerDialog.hide()
+      })
     }
   },
   setup() {

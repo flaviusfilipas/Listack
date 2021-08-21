@@ -7,7 +7,10 @@ import {SpinnerDialog} from '@ionic-native/spinner-dialog';
 export default {
   name: "AddContributorPage",
   methods: {
-    ...mapActions('lists', {addContributorAction: 'addContributor'}),
+    ...mapActions('lists', {
+      addContributorAction: 'addContributor',
+      approveContributorInvitation: 'approveContributorInvitation'
+    }),
     ...mapMutations('lists', {addContributorMutation: 'addContributor'}),
     addContributor() {
       SpinnerDialog.show()
@@ -16,6 +19,10 @@ export default {
       this.addContributorAction(contributor)
           .then(response => {
             this.addContributorMutation(response.data)
+            this.approveContributorInvitation({
+              userId: queryParams.userId,
+              listId: queryParams.listId
+            })
             SpinnerDialog.hide();
             router.push("/home")
           }).catch(error => {
