@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      email: '',
+      email: this.$route.query.recipientEmail ? this.$route.query.recipientEmail : '',
       password: '',
       name: '',
       isPwd: true
@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     ...mapActions('lists', ['addContributor', 'approveContributorInvitation']),
-    ...mapActions('auth', ['registerUser','getUserById']),
+    ...mapActions('auth', ['registerUser']),
 
     handleLocalRegistration(firebaseResponse) {
       axios.post('/api/users', {id: firebaseResponse.user.uid, name: this.name, email: this.email})
@@ -70,7 +70,6 @@ export default {
                 userId: firebaseResponse.user.uid,
                 listId: this.$route.query.listId
               })
-              this.getUserById(firebaseResponse.user.uid);
             }
             SpinnerDialog.hide()
             router.push("/home");

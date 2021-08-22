@@ -54,12 +54,11 @@ export default {
     }
   },
   methods:{
-    ...mapActions('auth',['loginUser','getUserById']),
+    ...mapActions('auth',['loginUser']),
     login(){
       SpinnerDialog.show();
       this.loginUser({email:this.email,password:this.password})
-      .then(response => {
-        this.getUserById(response.user.uid)
+      .then(() => {
         SpinnerDialog.hide();
         router.push('/home');
       }).catch(error =>{

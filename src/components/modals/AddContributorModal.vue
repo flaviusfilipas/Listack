@@ -54,6 +54,7 @@ import ContributorItem from "@/components/ContributorItem";
 import {closeOutline, personAddOutline} from 'ionicons/icons'
 import {mapActions, mapMutations, mapState} from "vuex";
 import AddContributor from "@/components/AddContributor";
+import {Storage} from "@capacitor/storage";
 
 export default {
   name: "AddContributorModal",
@@ -65,7 +66,7 @@ export default {
   },
   data() {
     return {
-      pendingContributorInvitationsSize: 0
+      pendingContributorInvitationsSize: 0,
     }
   },
   setup() {
@@ -81,6 +82,7 @@ export default {
       sendConfirmationEmailAction: 'sendConfirmationEmails',
       getContributorsByListIdAction: 'getContributorsByListId'
     }),
+    ...mapActions('auth',['getUserById']),
     dismiss() {
       if (this.pendingContributors.length > this.pendingContributorInvitationsSize) {
         alertController.create({
@@ -127,7 +129,9 @@ export default {
   mounted() {
     this.getPendingInvitations();
     this.getContributorsByListIdAction(this.currentList.id);
-
+    Storage.get({key: "userId"}).then(response => {
+       this.getUserById(response.value)
+    })
   }
 }
 </script>
