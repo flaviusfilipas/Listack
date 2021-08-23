@@ -18,6 +18,7 @@
     "@capacitor/keyboard": "1.0.1",
     "@capacitor/status-bar": "1.0.1",
     "@capacitor/storage": "^1.0.3",
+    "@googlemaps/js-api-loader": "^1.12.2",
     "@ionic-native/core": "^5.35.0",
     "@ionic-native/dialogs": "^5.35.0",
     "@ionic-native/native-storage": "^5.35.0",
