@@ -8,8 +8,8 @@
         <ion-button @click="openAddContributorModal()">
           <ion-icon :icon="personAddOutline"></ion-icon>
         </ion-button>
-        <ion-button>
-          <ion-icon :icon="locateOutline"></ion-icon>
+        <ion-button @click="openAddLocationModal()">
+          <ion-icon  :icon="locateOutline"></ion-icon>
         </ion-button>
         <header-auth-button></header-auth-button>
       </ion-buttons>
@@ -17,12 +17,12 @@
   </ion-header>
   <slot/>
 </template>
-
 <script>
-import {IonHeader, IonToolbar, IonButton, IonButtons, IonIcon, IonBackButton, modalController} from '@ionic/vue'
-import {personAddOutline, locateOutline} from 'ionicons/icons';
+import {IonBackButton, IonButton, IonButtons, IonHeader, IonIcon, IonToolbar, modalController} from '@ionic/vue'
+import {locateOutline, personAddOutline} from 'ionicons/icons';
 import HeaderAuthButton from "@/components/buttons/HeaderAuthButton";
 import AddContributorModal from "@/components/modals/AddContributorModal";
+import AddLocationModal from "@/components/modals/AddLocationModal";
 
 export default {
   name: 'ListViewLayout',
@@ -34,6 +34,11 @@ export default {
     openAddContributorModal() {
       modalController.create({
         component: AddContributorModal
+      }).then(modal => modal.present())
+    },
+    openAddLocationModal(){
+      modalController.create({
+        component:AddLocationModal
       }).then(modal => modal.present())
     }
   }
