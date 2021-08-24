@@ -15,6 +15,9 @@ const actions = {
     updateListItem({commit}, payload) {
         commit('updateListItem', payload)
     },
+    updateListSimpleAction({}, list){
+      return axios.put('/api/shopping-lists', list)
+    },
     updateList({commit}, payload) {
         axios.put('/api/shopping-lists', payload.item)
             .then(response => {
@@ -109,6 +112,10 @@ const actions = {
     }
 }
 const mutations = {
+    updateListMutation(state, list){
+        let index = state.userLists.findIndex(shoppingList => shoppingList.id === list.id);
+        Object.assign(state.userLists[index],list)
+    },
     updateListItem(state, payload) {
         Object.assign(state.shoppingItems[payload.index], payload.updates)
     },
