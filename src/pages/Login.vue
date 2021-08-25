@@ -2,27 +2,14 @@
   <ion-page>
     <auth-layout title="Login">
       <ion-content>
-        <ion-item class="with-margins" lines="full">
-          <ion-label position="floating">Email</ion-label>
-          <ion-icon class="pointer-cursor ion-margin-top" slot="end" :icon="mailOutline" color="primary"></ion-icon>
-          <ion-input v-model="email" type="email" required></ion-input>
-        </ion-item>
-        <ion-item class="with-margins" lines="full">
-          <ion-label position="floating">Password</ion-label>
-          <ion-icon @click="isPwd = !isPwd" class="pointer-cursor ion-margin-top" slot="end"
-                    :icon="isPwd ? eyeOffOutline: eyeOutline"
-                    color="primary"></ion-icon>
-          <ion-input v-model="password" :type="isPwd? 'password' : 'text'" required>
-          </ion-input>
-        </ion-item>
-        <div class="with-margins forgot-password">
-          <span style="color: #cf3c4f" class="pointer-cursor">Forgot password?</span>
-        </div>
-        <ion-row class="with-margins">
-          <ion-col>
-            <ion-button @click="login" shape="round" color="primary" expand="block">Login</ion-button>
-          </ion-col>
-        </ion-row>
+        <v-form @submit="login">
+          <auth-email-input @emitEmailValue="setEmailValue"/>
+          <auth-password-input @emitPasswordValue="setPasswordValue"/>
+          <div class="with-margins forgot-password">
+            <span class="pointer-cursor" style="color: #cf3c4f">Forgot password?</span>
+          </div>
+          <auth-button button-title="Login"/>
+        </v-form>
         <div class="sign-up-container with-margins">
           <h6>Don't have an account yet?</h6>
           <ion-button router-link='/register' fill="clear">Sign up</ion-button>
@@ -33,43 +20,54 @@
 </template>
 
 <script>
-import {IonButton, IonCol, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow} from '@ionic/vue'
+import {IonButton, IonContent, IonPage} from '@ionic/vue'
 import AuthLayout from '../components/layout/AuthLayout.vue'
-import {eyeOffOutline, eyeOutline, mailOutline} from "ionicons/icons";
 import {mapActions} from "vuex";
 import {SpinnerDialog} from "@ionic-native/spinner-dialog";
 import {Dialogs} from "@ionic-native/dialogs";
 import router from "@/router";
+import AuthEmailInput from "@/components/inputs/AuthEmailInput";
+import AuthPasswordInput from "@/components/inputs/AuthPasswordInput";
+import AuthButton from "@/components/buttons/AuthButton";
+import {Form} from "vee-validate";
 
 export default {
   name: 'Login',
   components: {
-    IonPage, IonIcon, IonItem, IonRow, IonCol, IonContent, IonButton, IonInput, IonLabel, AuthLayout
+    VForm: Form,
+    AuthButton,
+    AuthPasswordInput,
+    AuthEmailInput,
+    IonPage,
+    IonContent, AuthLayout,
+    IonButton
   },
   data() {
     return {
-      email:'',
-      password:'',
-      isPwd: true
+      email: '',
+      password: ''
     }
   },
-  methods:{
-    ...mapActions('auth',['loginUser']),
-    login(){
+  methods: {
+    ...mapActions('auth', ['loginUser']),
+    setEmailValue(value) {
+      this.email = value
+    },
+    setPasswordValue(value) {
+      this.password = value
+    },
+    login() {
       SpinnerDialog.show();
-      this.loginUser({email:this.email,password:this.password})
-      .then(() => {
+      this.loginUser({email: this.email, password: this.password})
+          .then(() => {
+            SpinnerDialog.hide();
+            router.push('/home');
+            this.email='';
+            this.password=''
+          }).catch(error => {
         SpinnerDialog.hide();
-        router.push('/home');
-      }).catch(error =>{
-        SpinnerDialog.hide();
-        Dialogs.alert(error.message, "Error","Ok")
+        Dialogs.alert(error.message, "Error", "Ok")
       })
-    }
-  },
-  setup() {
-    return {
-      eyeOffOutline, eyeOutline, mailOutline
     }
   }
 }
