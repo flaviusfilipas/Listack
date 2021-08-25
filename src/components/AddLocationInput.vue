@@ -1,25 +1,33 @@
 <template>
-  <ion-item lines="inset">
-    <ion-icon :icon="locationOutline" class="ion-padding-end" color="primary">
-    </ion-icon>
-    <ion-input
-        :disabled="isDisabled()"
-        ref="input"
-        placeholder="Add location"
-        type="text"></ion-input>
-    <ion-button
-        :disabled="isDisabled()"
-        @click="addLocation()"
-        fill="clear">
-      <ion-icon
-          slot="icon-only"
-          :icon="checkmarkOutline">
+  <v-form @submit="addLocation()">
+    <ion-item lines="inset">
+      <ion-icon :icon="locationOutline" class="ion-padding-end" color="primary">
       </ion-icon>
-    </ion-button>
-  </ion-item>
+      <v-field v-slot="{field}" :rules="rules" name="location">
+        <ion-input
+            ref="input"
+            v-bind="field"
+            :disabled="isDisabled()"
+            name="location"
+            placeholder="Add location"
+            type="text"></ion-input>
+      </v-field>
+      <ion-button
+          :disabled="isDisabled()"
+          fill="clear"
+          type="submit">
+        <ion-icon
+            slot="icon-only"
+            :icon="checkmarkOutline">
+        </ion-icon>
+      </ion-button>
+    </ion-item>
+    <v-error-message class="ion-padding-start" name="location" style="color: var(--ion-color-danger)"/>
+  </v-form>
 </template>
 
 <script>
+/* eslint-disable */
 import {checkmarkOutline, locationOutline} from 'ionicons/icons'
 import {IonButton, IonIcon, IonInput, IonItem, toastController} from "@ionic/vue";
 import {MAPS_API_KEY} from "@/config";
@@ -27,10 +35,13 @@ import {Loader} from '@googlemaps/js-api-loader'
 import {capitalizeFirstLetters} from '@/utils'
 import Location from '@/model/location'
 import {mapActions, mapMutations, mapState} from "vuex";
+import {ErrorMessage, Field, Form} from 'vee-validate'
+import {isBlank} from "@/validation-rules";
 
 export default {
   name: "AddLocationInput",
-  components: {IonItem, IonIcon, IonInput, IonButton},
+  components: {IonItem, IonIcon, IonInput, IonButton,
+    VForm: Form, VField: Field, VErrorMessage: ErrorMessage},
   setup() {
     return {
       checkmarkOutline, locationOutline
@@ -48,8 +59,11 @@ export default {
   methods: {
     ...mapActions('lists', ['updateListSimpleAction']),
     ...mapMutations('lists', ['updateListMutation']),
-    isDisabled(){
+    isDisabled() {
       return this.currentList.location !== null
+    },
+    rules(value){
+      return isBlank(value)
     },
     addLocation() {
       let localCurrentList = this.currentList;
